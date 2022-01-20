@@ -44,12 +44,13 @@ antigen bundle repo
 antigen bundle sudo
 antigen bundle vagrant
 antigen bundle web-search
-antigen bundle djui/alias-tips
+command -v python3 > /dev/null  && antigen bundle djui/alias-tips
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 # Set the used theme
 antigen theme romkatv/powerlevel10k
+antigen theme spaceship-prompt/spaceship-prompt # <-- this could be better for server than this v
 #antigen theme juanghurtado # this is for servers
 
 antigen apply
@@ -76,13 +77,14 @@ alias data-wine="WINEPREFIX=/mnt/data/programs/windows wine"
 alias data-winetricks="WINEPREFIX=/mnt/data/programs/windows winetricks"
 
 # Modern UNIX
-alias cat=bat
-alias ping=gping
-alias dig="dog A AAAA MX TXT NS SOA"
-alias ls="exa --icons --classify --all --header --group --modified --changed --git --long --group-directories-first"
+command -v bat > /dev/null && alias cat=bat
+command -v gping> /dev/null && alias ping=gping
+command -v dog > /dev/null && alias dig="dog A AAAA MX TXT NS "
+command -v exa > /dev/null && alias ls="exa --icons --classify --all --header --group --modified --changed --git --long --group-directories-first"
 
 #alias git=hub # Uncomment if hub is installed
 
+source ~/.zsh/aliases.local
 
 #######################
 #                     #
@@ -95,6 +97,8 @@ export EDITOR="/usr/bin/vim"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:${GOPATH//://bin:}/bin"
 #export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export ANSIBLE_NOCOWS=1
+export LUTRIS_ENABLE_PROTON=1
 
 
 #######################
