@@ -1,152 +1,105 @@
-
-# Tilix VTE fix
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-        source /etc/profile.d/vte.sh
-fi
-
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source ~/.zsh/antigen.zsh
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+# Path to your Oh My Zsh installation.
+export ZSH="$ZDOTDIR/ohmyzsh"
 
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
-#######################
-#                     #
-#       Antigen       #
-#                     #
-#######################
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-# Load the oh-my-zsh's library.
-antigen use oh-my-zsh
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' frequency 13
+# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
-# Bundles from the default repo (robbyrussell's oh-my-zsh).
-antigen bundle git
-antigen bundle heroku
-antigen bundle pip
-antigen bundle lein
-antigen bundle command-not-found
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
 
-# Custom bundles/plugins
-antigen bundle common-aliases
-antigen bundle docker
-antigen bundle git-extras
-antigen bundle git-flow
-antigen bundle github
-antigen bundle python
-antigen bundle repo
-antigen bundle sudo
-antigen bundle vagrant
-antigen bundle web-search
-command -v python3 > /dev/null  && antigen bundle djui/alias-tips
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+COMPLETION_WAITING_DOTS="true"
 
-# Set the used theme
-antigen theme romkatv/powerlevel10k
-antigen theme spaceship-prompt/spaceship-prompt # <-- this could be better for server than this v
-#antigen theme juanghurtado # this is for servers
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-antigen apply
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+HIST_STAMPS="yyy-mm-dd-HH-MM-SS"
 
+plugins=(
+    git
+    docker
+    docker-compose
+    dotenv
+    eza
+    fzf
+    git-commit
+    git-extras
+    history
+    rsync
+    sudo
+    systemd
+    tmux
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+  )
 
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
-#######################
-#                     #
-#       Aliases       #
-#                     #
-#######################
+source $ZSH/oh-my-zsh.sh
 
-unalias rm      # adds -i flag
-unalias duf     # idk, wierd alias
-unalias -s pdf  # suffix alias ('$ readme.pdf' -> '$ acroread readme.pdf'
+# User configuration
 
-alias -s pdf=evince
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-alias dc=docker-compose
-alias ip="ip -c"
-#alias ls='colorls --gs --sd' # if colorls is installed
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
 
-alias data-wine="WINEPREFIX=/mnt/data/programs/windows wine"
-alias data-winetricks="WINEPREFIX=/mnt/data/programs/windows winetricks"
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
 
-# Modern UNIX
-command -v bat > /dev/null && alias cat=bat
-command -v gping> /dev/null && alias ping=gping
-command -v dog > /dev/null && alias dig="dog A AAAA MX TXT NS "
-command -v exa > /dev/null && alias ls="exa --icons --classify --all --header --group --modified --changed --git --long --group-directories-first"
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
 
-#alias git=hub # Uncomment if hub is installed
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshrc="$EDITOR ${ZDOTDIR:-$HOME}/.zshrc"
+alias -g G=" | grep"
 
-source ~/.zsh/aliases.local
-
-#######################
-#                     #
-#      ENV  vars      #
-#                     #
-#######################
-
-
-export EDITOR="/usr/bin/vim"
-export GOPATH="$HOME/go"
-export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:${GOPATH//://bin:}/bin"
-#export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-export ANSIBLE_NOCOWS=1
-export LUTRIS_ENABLE_PROTON=1
-
-
-#######################
-#                     #
-#       Configs       #
-#                     #
-#######################
-
-# alias-tips 
-export ZSH_PLUGINS_ALIAS_TIPS_FORCE=0       # Force usage of aliases
-export ZSH_PLUGINS_ALIAS_TIPS_EXPAND=1      # Expand aliases
-export ZSH_PLUGINS_ALIAS_TIPS_TEXT="Alias tip: "    # Alias tip text
-export ZSH_PLUGINS_ALIAS_TIPS_EXCLUDES="_ ll vi"    # Alias tip exclude list
-export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=0      # Show command behind alias
-
-command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-#######################
-#                     #
-#      Functions      #
-#                     #
-#######################
-
-function mcd() {
-    mkdir -p $1
-    cd $1
-}
-
-function cdtmp() {
-    temp=$(mktemp -d)
-    cd $temp
-}
-
-#######################
-#                     #
-#         Misc        #
-#                     #
-#######################
-
-
-#######################
-#                     #
-#    Final includes   #
-#                     #
-#######################
-
-# asdf-vm
-([[ -f ~/.asdf/asdf.sh ]] && source ~/.asdf/asdf.sh) || ([[ -f /opt/asdf-vm/asdf.sh ]] && source /opt/asdf-vm/asdf.sh)
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.zsh/.p10k.zsh ]] && source ~/.zsh/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
+[[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
