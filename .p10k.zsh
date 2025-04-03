@@ -195,6 +195,11 @@
   #################################[ os_icon: os identifier ]##################################
   # OS identifier color.
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=255
+  # OS icon is red if user is root
+  if [[ $UID -eq 0 ]]; then
+    typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=red
+  fi
+
   # Custom icon.
   # typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='⭐'
 

@@ -6,7 +6,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$PATH:/home/pixl/.millennium/ext/bin
 
 # Path to your Oh My Zsh installation.
 export ZSH="$ZDOTDIR/ohmyzsh"
@@ -48,7 +49,7 @@ ZSH_CUSTOM="$ZDOTDIR/custom"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-HIST_STAMPS="yyy-mm-dd-HH-MM-SS"
+HIST_STAMPS="yyyy-mm-dd"
 
 plugins=(
     git
@@ -71,10 +72,16 @@ plugins=(
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
+if [[ -f ~/.config/user-dirs.dirs ]]; then
+    set -a
+    source ~/.config/user-dirs.dirs
+    set +a
+fi
 
 # User configuration
 
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_STRATEGY=(history)
+export SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -102,6 +109,9 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias zshrc="$EDITOR ${ZDOTDIR:-$HOME}/.zshrc"
 alias -g G=" | grep"
+command -v eza >/dev/null && alias ls='eza --icons=always --group-directories-first -g -a'
+
 
 # To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
 [[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
+
